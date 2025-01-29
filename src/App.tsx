@@ -18,7 +18,7 @@ function App() {
 
 	if(window.ethereum === undefined){
 		alert("Metamask is not detected. Install Metamask then try again.");
-		window.location.reload(true);
+		window.location.reload();
 	}
 
 	const providerRead = new ethers.providers.Web3Provider(window.ethereum); //Imported ethers from index.html with "<script src="https://cdn.ethers.io/lib/ethers-5.6.umd.min.js" type="text/javascript"></script>".
@@ -65,7 +65,7 @@ function App() {
             }]
 					})
 				//   location.reload(); 
-					window.location.reload(true);
+					window.location.reload();
 				  // alert("Failed to add the network at chainId " + baseSepoliaChainId + " with wallet_addEthereumChain request. Add the network with https://chainlist.org/ or do it manually. Error log: " + error.message)
 				} catch (error) {
 				  alert("Failed to add the network at chainId " + baseSepoliaChainId + " with wallet_addEthereumChain request. Add the network with https://chainlist.org/ or do it manually. Error log: " + error.message)
