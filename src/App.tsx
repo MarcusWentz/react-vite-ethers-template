@@ -12,9 +12,9 @@ import contractABI from './contracts/contractABI.json'
 function App() {
 
   	// deploy simple storage contract and paste deployed contract address here. This value is local ganache chain
-	let contractAddress = '0xdbaA7dfBd9125B7a43457D979B1f8a1Bd8687f37';
+	let contractAddress = '0xeD62F27e9e886A27510Dc491F5530996719cEd3d';
 
-	const goerliChainId = 5;
+	const baseSepoliaChainId = 84532;;
 
 	if(window.ethereum === undefined){
 		alert("Metamask is not detected. Install Metamask then try again.");
@@ -55,7 +55,7 @@ function App() {
 			// let chainId = await getChainIdConnected();
 			// alert(JSON.stringify(chainId))
 
-			if(window.ethereum.networkVersion != goerliChainId){
+			if(window.ethereum.networkVersion != baseSepoliaChainId){
 				// alert("You are not on the Goerli Testnet! Please switch to Goerli and refresh page.")
 				try{
 				  await window.ethereum.request({
@@ -66,9 +66,9 @@ function App() {
 					})
 				//   location.reload(); 
 					window.location.reload(true);
-				  // alert("Failed to add the network at chainId " + goerliChainId + " with wallet_addEthereumChain request. Add the network with https://chainlist.org/ or do it manually. Error log: " + error.message)
+				  // alert("Failed to add the network at chainId " + baseSepoliaChainId + " with wallet_addEthereumChain request. Add the network with https://chainlist.org/ or do it manually. Error log: " + error.message)
 				} catch (error) {
-				  alert("Failed to add the network at chainId " + goerliChainId + " with wallet_addEthereumChain request. Add the network with https://chainlist.org/ or do it manually. Error log: " + error.message)
+				  alert("Failed to add the network at chainId " + baseSepoliaChainId + " with wallet_addEthereumChain request. Add the network with https://chainlist.org/ or do it manually. Error log: " + error.message)
 				}
 			  }
 
@@ -132,7 +132,7 @@ function App() {
 	// 	}
 	// }
 
-	if(window.ethereum.networkVersion == goerliChainId){
+	if(window.ethereum.networkVersion == baseSepoliaChainId){
 		getStoredData();
 	}
 
