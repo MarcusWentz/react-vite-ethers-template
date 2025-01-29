@@ -30,13 +30,13 @@ function App() {
 	// const providerRead = new ethers.providers.Web3Provider(window.ethereum); //Imported ethers from index.html with "<script src="https://cdn.ethers.io/lib/ethers-5.6.umd.min.js" type="text/javascript"></script>".
 
 	const [errorMessage, setErrorMessage] = useState(null);
-	const [defaultAccount, setDefaultAccount] = useState(null);
+	// const [defaultAccount, setDefaultAccount] = useState(null);
 	const [connButtonText, setConnButtonText] = useState('🦊 Connect Wallet');
 
 	const [currentContractVal, setCurrentContractVal] = useState('Connect wallet then click button above');
 
-	const [provider, setProvider] = useState(null);
-	const [signer, setSigner] = useState(null);
+	// const [provider, setProvider] = useState(null);
+	// const [signer, setSigner] = useState(null);
 	const [contractWrite, setWriteContract] = useState(null);
 
 	const connectWalletHandler = async () => {
@@ -88,8 +88,9 @@ function App() {
 	}
 
 	// update account, will cause component re-render
-	const accountChangedHandler = (newAccount) => {
-		setDefaultAccount(newAccount);
+	// const accountChangedHandler = (newAccount) => {
+	const accountChangedHandler = () => {
+		// setDefaultAccount(newAccount);
 		updateEthers();
 	}
 
@@ -97,13 +98,14 @@ function App() {
 	window.ethereum.on('accountsChanged', accountChangedHandler);
 
 	async function updateEthers() {
-		let tempProvider = new ethers.BrowserProvider(window.ethereum);
-		setProvider(tempProvider);
 
-		let tempSigner = tempProvider.getSigner();
-		console.log(tempProvider.hasSigner());
-		console.log(tempSigner);
-		setSigner(tempSigner);
+		// let tempProvider = new ethers.BrowserProvider(window.ethereum);
+		// setProvider(tempProvider);
+
+		// let tempSigner = tempProvider.getSigner();
+		// console.log(tempProvider.hasSigner());
+		// console.log(tempSigner);
+		// setSigner(tempSigner);
 
 		const provider = new ethers.BrowserProvider(window.ethereum);
 		await provider.send("eth_requestAccounts", []); // Request account access
