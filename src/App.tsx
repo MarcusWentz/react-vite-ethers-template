@@ -137,12 +137,12 @@ function App() {
 		const signerZ = await providerZ.getSigner();
 		const contractWithSignerZ = new ethers.Contract(contractAddress, contractABI, signerZ);
 
-		const txZ = await contractWithSignerZ.set(1);
-		await txZ.wait();
+		const txZ = await contractWithSignerZ.set(inputValue);
+		console.log(txZ.hash);
 
 
 
-		
+
 		// // When sending a transaction, the value is in wei, so parseEther
 		// // converts ether to wei.
 		// const tx = await contractWrite.set(1);
