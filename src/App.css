@@ -40,3 +40,40 @@
 .read-the-docs {
   color: #888;
 }
+
+
+.buttonHighContrast {
+  background-color: #000000;
+  color: #ffffff;
+  border-style: solid;
+  border-color: #ffffff;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.buttonHighContrast:hover {
+  background-color: #ffffff;
+  color: #000000;
+  border-style: solid;
+  border-color: #ffffff;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.buttonConnectMetamask {
+  background-color: #000000;
+  color: #ff7300;
+  border-style: solid;
+  border-color: #ff7300;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
