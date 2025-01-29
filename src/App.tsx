@@ -40,41 +40,50 @@ function App() {
 	const [contractWrite, setWriteContract] = useState(null);
 
 	const connectWalletHandler = async () => {
-		if (window.ethereum && window.ethereum.isMetaMask) {
 
-			window.ethereum.request({ method: 'eth_requestAccounts'})
-			.then(accounts => {
-				accountChangedHandler(accounts[0]);
-				setConnButtonText(accounts[0].substr(0,5) + "..." +  accounts[0].substr(38,4) );
-			})
-			.catch(error => {
-				setErrorMessage(error.message);
-			
-			});
-
-			// let chainId = await getChainIdConnected();
-			// alert(JSON.stringify(chainId))
-
-			if(window.ethereum.networkVersion != baseSepoliaChainId){
-				// alert("You are not on the Goerli Testnet! Please switch to Goerli and refresh page.")
-				try{
-				  await window.ethereum.request({
-					  method: "wallet_switchEthereumChain",
-					  params: [{
-              chainId: "0x" + baseSepoliaChainId.toString(16) //Convert decimal to hex string.
-            }]
-					})
-				//   location.reload(); 
-					window.location.reload();
-				  // alert("Failed to add the network at chainId " + baseSepoliaChainId + " with wallet_addEthereumChain request. Add the network with https://chainlist.org/ or do it manually. Error log: " + error.message)
-				} catch (error) {
-				  alert("Failed to add the network at chainId " + baseSepoliaChainId + " with wallet_addEthereumChain request. Add the network with https://chainlist.org/ or do it manually. Error log: " + error.message)
-				}
-			  }
-
-		} else {
+		if (window.ethereum === undefined || window.ethereum.isMetaMask === undefined) {
 			console.log('Need to install MetaMask');
 			setErrorMessage('Please install MetaMask browser extension to interact');
+			return;
+		}
+
+		window.ethereum.request({ method: 'eth_requestAccounts'})
+		.then(accounts => {
+			accountChangedHandler(accounts[0]);
+			setConnButtonText(accounts[0].substr(0,5) + "..." +  accounts[0].substr(38,4) );
+		})
+		.catch(error => {
+			setErrorMessage(error.message);
+		});
+
+		// let chainId = await getChainIdConnected();
+		// alert(JSON.stringify(chainId))
+
+		// Updated chainId request method suggested by Metamask.
+		let chainIdConnected = await window.ethereum.request({method: 'net_version'});
+
+		// // Outdated chainId request method which might get deprecated:
+		// //  https://github.com/MetaMask/metamask-improvement-proposals/discussions/23
+		// let chainIdConnected = window.ethereum.networkVersion;
+
+		console.log("chainIdConnected: " + chainIdConnected)
+
+		if(chainIdConnected != baseSepoliaChainId){
+			// alert("You are not on the Goerli Testnet! Please switch to Goerli and refresh page.")
+			try{
+				await window.ethereum.request({
+					method: "wallet_switchEthereumChain",
+					params: [{
+						chainId: "0x" + baseSepoliaChainId.toString(16) //Convert decimal to hex string.
+					}]
+				})
+
+				window.location.reload();
+				// alert("Failed to add the network at chainId " + baseSepoliaChainId + " with wallet_addEthereumChain request. Add the network with https://chainlist.org/ or do it manually. Error log: " + error.message)
+			
+			} catch (error) {
+				alert("Failed to add the network at chainId " + baseSepoliaChainId + " with wallet_addEthereumChain request. Add the network with https://chainlist.org/ or do it manually. Error log: " + error.message)
+			}
 		}
 	}
 
@@ -166,7 +175,7 @@ function App() {
 
 	getStoredData()
 
-		async function getStoredData() {
+	async function getStoredData() {
 
 		// Updated chainId request method suggested by Metamask.
 		let chainIdConnected = await window.ethereum.request({method: 'net_version'});
