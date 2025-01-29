@@ -12,7 +12,7 @@ import contractABI from './contracts/contractABI.json'
 function App() {
 
   	// deploy simple storage contract and paste deployed contract address here. This value is local ganache chain
-	let contractAddress = '0xeD62F27e9e886A27510Dc491F5530996719cEd3d';
+	const contractAddress = '0xeD62F27e9e886A27510Dc491F5530996719cEd3d';
 
 	const baseSepoliaChainId = 84532;;
 
