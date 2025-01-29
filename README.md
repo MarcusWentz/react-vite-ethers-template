@@ -25,3 +25,18 @@ npm run dev
 ## GitHub Pages React Vite Guide
 
 https://github.com/ErickKS/vite-deploy
+
+🔴 Warning 🔴
+
+In package.json the build command was modified from 
+
+```json
+"build": "tsc -b && vite build",
+```
+
+to:
+```json
+"build": "vite build",
+```
+
+in order to ignore Typescript errors at build time for GitHub pages.
