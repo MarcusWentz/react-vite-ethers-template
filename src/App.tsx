@@ -37,7 +37,7 @@ function App() {
 
 	const [provider, setProvider] = useState(null);
 	const [signer, setSigner] = useState(null);
-	const [contractInstance, setContract] = useState(null);
+	const [contractWrite, setWriteContract] = useState(null);
 
 	const connectWalletHandler = async () => {
 		if (window.ethereum && window.ethereum.isMetaMask) {
@@ -96,16 +96,15 @@ function App() {
 		console.log(tempSigner);
 		setSigner(tempSigner);
 
-
 		const provider = new ethers.BrowserProvider(window.ethereum);
 		await provider.send("eth_requestAccounts", []); // Request account access
 	
 		const signer = await provider.getSigner();
-		const contractInstance = new ethers.Contract(contractAddress, contractABI, signer);
-		setContract(contractInstance); // ✅ Now the contract has a signer
+		const tempContractWrite = new ethers.Contract(contractAddress, contractABI, signer);
+		setWriteContract(tempContractWrite); // ✅ Now the contract has a signer
 
 		// let tempContract = new ethers.Contract(contractAddress, contractABI, signer);
-		// setContract(tempContract);	
+		// setWriteContract(tempContract);	
 	}
 
 	// const setHandler = (event) => {
@@ -125,21 +124,26 @@ function App() {
 
 		console.log("Input value: " + inputValue)
 
-		if(contractInstance === null) {
+		if(contractWrite === null) {
 			alert("Connect your wallet.");
 			return;
 		}
 
 		console.log("Contract object is not null.")
 
+
+		// Test React hook variables for tx.
+
 		// console.log(provider);
 
 		// console.log(signer);
 
-		// console.log(contractWrite);
+		// console.log(contractWrite.interface);
 
+		const tx = await contractWrite.set(inputValue);
+		console.log(tx.hash);
 
-
+		// // Test directly if the tx fails with React hook variables.
 		// const testProvider = new ethers.BrowserProvider(window.ethereum);
 		// await testProvider.send("eth_requestAccounts", []); // Request permission from user
 
@@ -148,11 +152,6 @@ function App() {
 
 		// const tx = await testContractWithSigner.set(inputValue);
 		// console.log(tx.hash);
-
-		const tx = await contractInstance.set(inputValue);
-		console.log(tx.hash);
-
-		// contractInstance
 		
 	}
 
