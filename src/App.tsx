@@ -37,7 +37,7 @@ function App() {
 
 	const [provider, setProvider] = useState(null);
 	const [signer, setSigner] = useState(null);
-	const [contractWrite, setContract] = useState(null);
+	const [contractInstance, setContract] = useState(null);
 
 	const connectWalletHandler = async () => {
 		if (window.ethereum && window.ethereum.isMetaMask) {
@@ -87,7 +87,7 @@ function App() {
 	// listen for account changes
 	window.ethereum.on('accountsChanged', accountChangedHandler);
 
-	const updateEthers = () => {
+	async function updateEthers() {
 		let tempProvider = new ethers.BrowserProvider(window.ethereum);
 		setProvider(tempProvider);
 
@@ -96,8 +96,16 @@ function App() {
 		console.log(tempSigner);
 		setSigner(tempSigner);
 
-		let tempContract = new ethers.Contract(contractAddress, contractABI, signer);
-		setContract(tempContract);	
+
+		const provider = new ethers.BrowserProvider(window.ethereum);
+		await provider.send("eth_requestAccounts", []); // Request account access
+	
+		const signer = await provider.getSigner();
+		const contractInstance = new ethers.Contract(contractAddress, contractABI, signer);
+		setContract(contractInstance); // ✅ Now the contract has a signer
+
+		// let tempContract = new ethers.Contract(contractAddress, contractABI, signer);
+		// setContract(tempContract);	
 	}
 
 	// const setHandler = (event) => {
@@ -117,7 +125,7 @@ function App() {
 
 		console.log("Input value: " + inputValue)
 
-		if(contractWrite === null) {
+		if(contractInstance === null) {
 			alert("Connect your wallet.");
 			return;
 		}
@@ -130,14 +138,21 @@ function App() {
 
 		// console.log(contractWrite);
 
-		const testProvider = new ethers.BrowserProvider(window.ethereum);
-		await testProvider.send("eth_requestAccounts", []); // Request permission from user
 
-		const testSigner = await testProvider.getSigner();
-		const testContractWithSigner = new ethers.Contract(contractAddress, contractABI, testSigner);
 
-		const tx = await testContractWithSigner.set(inputValue);
+		// const testProvider = new ethers.BrowserProvider(window.ethereum);
+		// await testProvider.send("eth_requestAccounts", []); // Request permission from user
+
+		// const testSigner = await testProvider.getSigner();
+		// const testContractWithSigner = new ethers.Contract(contractAddress, contractABI, testSigner);
+
+		// const tx = await testContractWithSigner.set(inputValue);
+		// console.log(tx.hash);
+
+		const tx = await contractInstance.set(inputValue);
 		console.log(tx.hash);
+
+		// contractInstance
 		
 	}
 
