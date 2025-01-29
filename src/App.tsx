@@ -87,17 +87,18 @@ function App() {
 		}
 	}
 
+	// React hook with ethers.js that automatically detects if accounts change in Metamask.
 	// update account, will cause component re-render
 	// const accountChangedHandler = (newAccount) => {
 	const accountChangedHandler = () => {
 		// setDefaultAccount(newAccount);
-		updateEthers();
+		updateUserAccountSigner();
 	}
 
 	// listen for account changes
 	window.ethereum.on('accountsChanged', accountChangedHandler);
 
-	async function updateEthers() {
+	async function updateUserAccountSigner() {
 
 		// let tempProvider = new ethers.BrowserProvider(window.ethereum);
 		// setProvider(tempProvider);
