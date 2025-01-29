@@ -28,7 +28,7 @@ https://github.com/ErickKS/vite-deploy
 
 🔴 Warning 🔴
 
-In package.json the build command was modified from 
+In package.json the build command was modified from:
 
 ```json
 "build": "tsc -b && vite build",
@@ -40,3 +40,9 @@ to:
 ```
 
 in order to ignore Typescript errors at build time for GitHub pages.
+
+Test build locally with:
+
+```shell
+npm run build
+```
