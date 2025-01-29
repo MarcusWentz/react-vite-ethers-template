@@ -1,4 +1,4 @@
-# vite-react-frontend-test
+# react-vite-ethers-template 
 
 ## React + TypeScript + Vite
 
