@@ -132,19 +132,24 @@ function App() {
 	// 	}
 	// }
 
-  getStoredData()
+	getStoredData()
 
-	async function getStoredData() {
+		async function getStoredData() {
 
-    // Updated chainId request method suggested by Metamask.
-    let chainIdConnected = await window.ethereum.request({method: 'net_version'});
+		// Updated chainId request method suggested by Metamask.
+		let chainIdConnected = await window.ethereum.request({method: 'net_version'});
 
-    // // Outdated chainId request method which might get deprecated:
-    // //  https://github.com/MetaMask/metamask-improvement-proposals/discussions/23
-    // let chainIdConnected = window.ethereum.networkVersion;
+		// // Outdated chainId request method which might get deprecated:
+		// //  https://github.com/MetaMask/metamask-improvement-proposals/discussions/23
+		// let chainIdConnected = window.ethereum.networkVersion;
 
-    console.log("chainIdConnected: " + chainIdConnected)
-    
+		console.log("chainIdConnected: " + chainIdConnected)
+
+		if(chainIdConnected != baseSepoliaChainId){
+			setCurrentContractVal("You are not on the Base Sepolia Testnet. Please switch to Goerli and refresh page.");
+			return;
+		}
+		
 		let storedDataCallValue = await contractRead.storedData()
 		if(storedDataCallValue.toNumber() === undefined){
 			setCurrentContractVal("Install Metamask and select Goerli Testnet to have a Web3 provider to read blockchain data.");
@@ -152,7 +157,8 @@ function App() {
 		else{
 			setCurrentContractVal(storedDataCallValue.toNumber());
 		}
-	  }
+
+	}
 	
 	// async function getChainIdConnected() {
 
