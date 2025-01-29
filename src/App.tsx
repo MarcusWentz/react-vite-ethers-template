@@ -14,7 +14,7 @@ function App() {
   	// deploy simple storage contract and paste deployed contract address here. This value is local ganache chain
 	const contractAddress = '0xeD62F27e9e886A27510Dc491F5530996719cEd3d';
 
-	const baseSepoliaChainId = 84532;;
+	const baseSepoliaChainId = 84532;
 
 	if(window.ethereum === undefined){
 		alert("Metamask is not detected. Install Metamask then try again.");
