@@ -61,8 +61,8 @@ function App() {
 				  await window.ethereum.request({
 					  method: "wallet_switchEthereumChain",
 					  params: [{
-						 chainId: "0x5"
-					  }]
+              chainId: "0x" + baseSepoliaChainId.toString(16) //Convert decimal to hex string.
+            }]
 					})
 				//   location.reload(); 
 					window.location.reload(true);
