@@ -21,3 +21,7 @@ npm i
 ```shell
 npm run dev
 ```
+
+## GitHub Pages React Vite Guide
+
+https://github.com/ErickKS/vite-deploy
