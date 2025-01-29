@@ -21,7 +21,7 @@ function App() {
 		window.location.reload();
 	}
 
-	const providerRead = new ethers.providers.Web3Provider(window.ethereum); //Imported ethers from index.html with "<script src="https://cdn.ethers.io/lib/ethers-5.6.umd.min.js" type="text/javascript"></script>".
+	const providerRead = new ethers.BrowserProvider(window.ethereum); //Imported ethers from index.html with "<script src="https://cdn.ethers.io/lib/ethers-5.6.umd.min.js" type="text/javascript"></script>".
 
 	const contractRead = new ethers.Contract(contractAddress, contractABI, providerRead);
 
@@ -35,9 +35,9 @@ function App() {
 
 	const [currentContractVal, setCurrentContractVal] = useState('Connect wallet then click button above');
 
-	const [providerAccount, setProvider] = useState(null);
+	const [provider, setProvider] = useState(null);
 	const [signer, setSigner] = useState(null);
-	const [contract, setContract] = useState(null);
+	const [contractWrite, setContract] = useState(null);
 
 	const connectWalletHandler = async () => {
 		if (window.ethereum && window.ethereum.isMetaMask) {
@@ -88,38 +88,104 @@ function App() {
 	window.ethereum.on('accountsChanged', accountChangedHandler);
 
 	const updateEthers = () => {
-		let tempProvider = new ethers.providers.Web3Provider(window.ethereum);
+		let tempProvider = new ethers.BrowserProvider(window.ethereum);
 		setProvider(tempProvider);
 
 		let tempSigner = tempProvider.getSigner();
+		console.log(tempProvider.hasSigner());
+		console.log(tempSigner);
 		setSigner(tempSigner);
 
-		let tempContract = new ethers.Contract(contractAddress, contractABI, tempSigner);
+		let tempContract = new ethers.Contract(contractAddress, contractABI, signer);
 		setContract(tempContract);	
 	}
 
-	const setHandler = (event) => {
+	// const setHandler = (event) => {
+
+	const setHandler = async event => {
+
+		console.log("CLICKKKKKKKK")
 
 		event.preventDefault(); //Keep this or else the page will refresh.
 
-		if(event.target.setText.value === "") {
+		let inputValue = event.target.setText.value;
+
+		if(inputValue=== "") {
 			alert("Enter a number.");
 			return;
 		}
-		if(contract === null) {
+
+		console.log(inputValue)
+
+		if(contractWrite === null) {
 			alert("Connect your wallet.");
 			return;
 		}
 
-		contract.set(event.target.setText.value)
-		.then(tx => {
-			console.log("Tx submitted: " + tx.hash)
-		})
-		.catch(e => {
-			 if (e.code === 4001){
-				 alert("Transaction request failed.")
-			 } 
-		});
+		console.log("CONTRACT OBJECT WITH ADDRESS AND ABI VALID.")
+
+		// console.log(provider);
+
+		// console.log(signer);
+
+		// console.log(contractWrite);
+
+
+		const providerZ = new ethers.BrowserProvider(window.ethereum);
+		await providerZ.send("eth_requestAccounts", []); // Request permission from user
+
+		const signerZ = await providerZ.getSigner();
+		const contractWithSignerZ = new ethers.Contract(contractAddress, contractABI, signerZ);
+
+		const txZ = await contractWithSignerZ.set(1);
+		await txZ.wait();
+
+
+
+		
+		// // When sending a transaction, the value is in wei, so parseEther
+		// // converts ether to wei.
+		// const tx = await contractWrite.set(1);
+		// console.log(tx);
+		
+		// // Often you may wish to wait until the transaction is mined
+		// const receipt = await tx.wait();
+
+
+
+		// const callDataObject = await contract.set.populateTransaction(inputValue);
+		// const txData = callDataObject.data;
+	  
+		// ethereum
+		// .request({
+		//   method: 'eth_sendTransaction',
+		//   params: [
+		// 	{
+		// 	  from: accounts[0],
+		// 	  to: contractAddress_JS,
+		// 	  data: txData
+		// 	},
+		//   ],
+		// })
+		// .then((txHash) => console.log(txHash))
+		// .catch((error) => console.error);  
+
+		
+		// const txSigned = await contract.set(inputValue); //Will compute the gas limit opcodes automatically and get the oracle gas price per gas unit.
+	  
+		// console.log("Tx submitted: " + txSigned.hash)
+
+
+
+		// contract.set(inputValue)
+		// .then(tx => {
+		// 	console.log("Tx submitted: " + tx.hash)
+		// })
+		// .catch(e => {
+		// 	 if (e.code === 4001){
+		// 		 alert("Transaction request failed.")
+		// 	 } 
+		// });
 		
 	}
 
@@ -151,11 +217,14 @@ function App() {
 		}
 		
 		let storedDataCallValue = await contractRead.storedData()
-		if(storedDataCallValue.toNumber() === undefined){
+		// console.log(storedDataCallValue)
+		if(storedDataCallValue === undefined){
 			setCurrentContractVal("Install Metamask and select Goerli Testnet to have a Web3 provider to read blockchain data.");
 		}
 		else{
-			setCurrentContractVal(storedDataCallValue.toNumber());
+			let storedDataCallValueNumber = Number(storedDataCallValue);
+			// console.log(storedDataCallValueNumber)
+			setCurrentContractVal(storedDataCallValueNumber);
 		}
 
 	}
