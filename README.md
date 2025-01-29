@@ -4,6 +4,10 @@
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
+## GitHub Pages Hosted Link
+
+https://marcuswentz.github.io/react-vite-ethers-template/
+
 ## Generate Vite React Project Template
 
 ```shell
