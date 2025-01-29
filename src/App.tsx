@@ -191,7 +191,7 @@ function App() {
 			<h4> </h4>
 			{errorMessage}
 			<h4> </h4>
-			<form action="https://github.com/MarcusWentz/react-ethers-template">
+			<form action="https://github.com/MarcusWentz/react-vite-ethers-template">
 				<input className="button buttonHighContrast" type="submit" value="GitHub" />
 			</form>
 		</div>
