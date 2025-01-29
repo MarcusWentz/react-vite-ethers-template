@@ -104,7 +104,7 @@ function App() {
 
 	const setHandler = async event => {
 
-		console.log("CLICKKKKKKKK")
+		console.log("set button click")
 
 		event.preventDefault(); //Keep this or else the page will refresh.
 
@@ -115,14 +115,14 @@ function App() {
 			return;
 		}
 
-		console.log(inputValue)
+		console.log("Input value: " + inputValue)
 
 		if(contractWrite === null) {
 			alert("Connect your wallet.");
 			return;
 		}
 
-		console.log("CONTRACT OBJECT WITH ADDRESS AND ABI VALID.")
+		console.log("Contract object is not null.")
 
 		// console.log(provider);
 
@@ -130,62 +130,14 @@ function App() {
 
 		// console.log(contractWrite);
 
+		const testProvider = new ethers.BrowserProvider(window.ethereum);
+		await testProvider.send("eth_requestAccounts", []); // Request permission from user
 
-		const providerZ = new ethers.BrowserProvider(window.ethereum);
-		await providerZ.send("eth_requestAccounts", []); // Request permission from user
+		const testSigner = await testProvider.getSigner();
+		const testContractWithSigner = new ethers.Contract(contractAddress, contractABI, testSigner);
 
-		const signerZ = await providerZ.getSigner();
-		const contractWithSignerZ = new ethers.Contract(contractAddress, contractABI, signerZ);
-
-		const txZ = await contractWithSignerZ.set(inputValue);
-		console.log(txZ.hash);
-
-
-
-
-		// // When sending a transaction, the value is in wei, so parseEther
-		// // converts ether to wei.
-		// const tx = await contractWrite.set(1);
-		// console.log(tx);
-		
-		// // Often you may wish to wait until the transaction is mined
-		// const receipt = await tx.wait();
-
-
-
-		// const callDataObject = await contract.set.populateTransaction(inputValue);
-		// const txData = callDataObject.data;
-	  
-		// ethereum
-		// .request({
-		//   method: 'eth_sendTransaction',
-		//   params: [
-		// 	{
-		// 	  from: accounts[0],
-		// 	  to: contractAddress_JS,
-		// 	  data: txData
-		// 	},
-		//   ],
-		// })
-		// .then((txHash) => console.log(txHash))
-		// .catch((error) => console.error);  
-
-		
-		// const txSigned = await contract.set(inputValue); //Will compute the gas limit opcodes automatically and get the oracle gas price per gas unit.
-	  
-		// console.log("Tx submitted: " + txSigned.hash)
-
-
-
-		// contract.set(inputValue)
-		// .then(tx => {
-		// 	console.log("Tx submitted: " + tx.hash)
-		// })
-		// .catch(e => {
-		// 	 if (e.code === 4001){
-		// 		 alert("Transaction request failed.")
-		// 	 } 
-		// });
+		const tx = await testContractWithSigner.set(inputValue);
+		console.log(tx.hash);
 		
 	}
 
